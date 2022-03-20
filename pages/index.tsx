@@ -1,32 +1,29 @@
 import { gql } from "@apollo/client";
+import { Song } from "interfaces/Song";
 import { client } from "../apollo";
-
-interface Song {
-  _id: string
-  name: string;
-  author: string;
-  genre: string;
-}
+import { SongList } from "components/songs";
+import { Layout } from "components/Layout";
+import { useRouter } from "next/router";
 
 interface Props {
   songs: Song[];
 }
 
-function IndexPage({ songs }: Props) {
+function IndexPage({ songs = [] }: Props) {
+  const router = useRouter();
   return (
-    <div>
-      <h1>Song List</h1>
-
-      <ul>
-        {songs.map((song) => (
-          <li key={song._id}>
-            <p>{song.name}</p>
-            <p>{song.author}</p>
-            <p>{song.genre}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Layout>
+      <header className="py-4 flex items-center justify-between">
+        <h1 className="text-white text-5xl font-bold pb-4">NextSpotify</h1>
+        <button
+          className="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-500"
+          onClick={() => router.push("/new")}
+        >
+          Add Song
+        </button>
+      </header>
+      <SongList songs={songs} />
+    </Layout>
   );
 }
 
